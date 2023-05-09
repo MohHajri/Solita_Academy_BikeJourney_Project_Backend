@@ -26,4 +26,8 @@ public class BikeStationService {
         return bikeStationRepository.findByName(name);
     }
 
+    public BikeStation saveBikeStation(BikeStation bikeStation) {
+        return bikeStationRepository.save(bikeStation);
+    }
+
 }
