@@ -25,6 +25,15 @@ public class RestController {
     @Autowired
     private BikeStationService bikeStationService;
 
+    @CrossOrigin(origins = "http://localhost:3000")
+    @GetMapping("/getalltrips")
+    public HashMap<String, Object> getAllBikeTrips(@RequestParam("pagenumber") int pageNumber,
+            @RequestParam("numberoftrips") int numberOfTrips, @RequestParam("sortingcolumn") String sortingColumn,
+            @RequestParam("isascending") boolean isAscending) {
+
+        return bikeTripService.getAllBikeTrips(pageNumber, numberOfTrips, sortingColumn, isAscending);
+    }
+
     @GetMapping("/gettripbyid")
     public BikeTrip getBikeTripById(@RequestParam("id") int id) {
         return bikeTripService.getBikeTripById(id);
