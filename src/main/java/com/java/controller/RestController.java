@@ -17,6 +17,7 @@ import com.java.entity.BikeTrip;
 import com.java.service.BikeStationService;
 import com.java.service.BikeTripService;
 
+@CrossOrigin(origins = "${cors.allowed.origins}")
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
