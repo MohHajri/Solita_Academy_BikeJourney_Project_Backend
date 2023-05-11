@@ -12,13 +12,28 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java.bean.BikeStationDetail;
 import com.java.entity.BikeStation;
+import com.java.entity.BikeTrip;
 import com.java.service.BikeStationService;
+import com.java.service.BikeTripService;
 
 @org.springframework.web.bind.annotation.RestController
 public class RestController {
 
     @Autowired
+    private BikeTripService bikeTripService;
+
+    @Autowired
     private BikeStationService bikeStationService;
+
+    @GetMapping("/gettripbyid")
+    public BikeTrip getBikeTripById(@RequestParam("id") int id) {
+        return bikeTripService.getBikeTripById(id);
+    }
+
+    @GetMapping("/getcountoftrips")
+    public Long getCountOfTrips() {
+        return bikeTripService.getCountOfTrips();
+    }
 
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getallstations")
