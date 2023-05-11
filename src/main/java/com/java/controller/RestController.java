@@ -1,5 +1,6 @@
 package com.java.controller;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +45,6 @@ public class RestController {
         return bikeTripService.getCountOfTrips();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getallstations")
     public List<BikeStation> getAllBikeStations() {
         return bikeStationService.getAllBikeStations();
@@ -65,6 +65,30 @@ public class RestController {
     @GetMapping("/getstationdetailsbyname")
     public BikeStationDetail getBikeStationDetailsByName(@RequestParam("stationname") String stationName) {
         return bikeStationService.getBikeStationDetails(stationName);
+    }
+
+    @PostMapping("/savebiketrip")
+    public ResponseEntity<BikeTrip> saveBikeTrip(@RequestParam("departureTime") Timestamp departureTime,
+            @RequestParam("returnTime") Timestamp returnTime,
+            @RequestParam("departureStationId") int departureStationId,
+            @RequestParam("departureStationName") String departureStationName,
+            @RequestParam("returnStationId") int returnStationId,
+            @RequestParam("returnStationName") String returnStationName,
+            @RequestParam("coveredDistanceInMeter") float coveredDistanceInMeter,
+            @RequestParam("durationInSec") float durationInSec) {
+
+        BikeTrip bikeTrip = new BikeTrip();
+
+        bikeTrip.setDepartureTime(departureTime);
+        bikeTrip.setReturnTime(returnTime);
+        bikeTrip.setDepartureStationId(departureStationId);
+        bikeTrip.setDepartureStationName(departureStationName);
+        bikeTrip.setReturnStationId(returnStationId);
+        bikeTrip.setReturnStationName(returnStationName);
+        bikeTrip.setCoveredDistanceInMeter(coveredDistanceInMeter);
+        bikeTrip.setDurationInSec(durationInSec);
+
+        return ResponseEntity.ok(bikeTripService.saveBikeStrip(bikeTrip));
     }
 
     @PostMapping("/savebikestation")

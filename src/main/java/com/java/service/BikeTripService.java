@@ -48,4 +48,7 @@ public class BikeTripService {
         return bikeTripRepository.count();
     }
 
+    public BikeTrip saveBikeStrip(BikeTrip bikeTrip) {
+        return bikeTripRepository.save(bikeTrip);
+    }
 }
