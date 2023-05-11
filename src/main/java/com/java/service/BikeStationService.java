@@ -1,5 +1,6 @@
 package com.java.service;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -79,6 +80,38 @@ public class BikeStationService {
         }
 
     }
+
+    /**
+     * This method is used to get the bike station details by station name and date
+     * filter
+     */
+
+    public BikeStationDetail getBikeStationDetailsWithDateFilter(String stationName, Timestamp startDate,
+            Timestamp endDate) {
+
+        if (bikeStationRepository.existsByName(stationName)) {
+
+            BikeStationDetail bikeStationDetails = new BikeStationDetail();
+            bikeStationDetails.setStationName(stationName);
+            bikeStationDetails.setStationAddress(bikeStationRepository.findByName(stationName).getAddress());
+            bikeStationDetails.setDepartureStationAggregate(
+                    bikeStationRepository.findDepartureStationAggregate(stationName, startDate, endDate));
+            bikeStationDetails.setReturnStationAggregate(
+                    bikeStationRepository.findReturnStationAggregate(stationName, startDate, endDate));
+            bikeStationDetails.setTopFiveDepartureStations(bikeStationRepository
+                    .getTopDepartureStationNames(stationName, startDate, endDate, PageRequest.of(0, 5)));
+            bikeStationDetails.setTopFiveReturnStations(bikeStationRepository.getTopReturnStationNames(stationName,
+                    startDate, endDate, PageRequest.of(0, 5)));
+            return bikeStationDetails;
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * This method is used to save the bike station customized by user
+     */
 
     public BikeStation saveBikeStation(BikeStation bikeStation) {
         return bikeStationRepository.save(bikeStation);
