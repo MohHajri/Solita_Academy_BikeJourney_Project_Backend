@@ -66,6 +66,13 @@ public class BikeStationService {
             BikeStationDetail bikeStationDetails = new BikeStationDetail();
             bikeStationDetails.setStationName(stationName);
             bikeStationDetails.setStationAddress(bikeStationRepository.findByName(stationName).getAddress());
+            bikeStationDetails
+                    .setDepartureStationAggregate(bikeStationRepository.findDepartureStationAggregate(stationName));
+            bikeStationDetails.setReturnStationAggregate(bikeStationRepository.findReturnStationAggregate(stationName));
+            bikeStationDetails.setTopFiveDepartureStations(
+                    bikeStationRepository.getTopDepartureStationNames(stationName, PageRequest.of(0, 5)));
+            bikeStationDetails.setTopFiveReturnStations(
+                    bikeStationRepository.getTopReturnStationNames(stationName, PageRequest.of(0, 5)));
             return bikeStationDetails;
         } else {
             return null;
