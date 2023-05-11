@@ -27,7 +27,6 @@ public class RestController {
     @Autowired
     private BikeStationService bikeStationService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getalltrips")
     public HashMap<String, Object> getAllBikeTrips(@RequestParam("pagenumber") int pageNumber,
             @RequestParam("numberoftrips") int numberOfTrips, @RequestParam("sortingcolumn") String sortingColumn,
@@ -36,51 +35,43 @@ public class RestController {
         return bikeTripService.getAllBikeTrips(pageNumber, numberOfTrips, sortingColumn, isAscending);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/gettripbyid")
     public BikeTrip getBikeTripById(@RequestParam("id") int id) {
         return bikeTripService.getBikeTripById(id);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getcountoftrips")
     public Long getCountOfTrips() {
         return bikeTripService.getCountOfTrips();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getallstations")
     public List<BikeStation> getAllBikeStations() {
         return bikeStationService.getAllBikeStations();
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getstationbyid")
     public BikeStation getBikeStationById(@RequestParam("stationid") int stationid) {
         return bikeStationService.getBikeStationById(stationid);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getstationsbyname")
     public HashMap<String, Object> getStationsByName(@RequestParam("stationname") String stationName,
             @RequestParam("pagenumber") int page, @RequestParam("numberofstations") int size) {
         return bikeStationService.getBikeStationsByName(stationName, page, size);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getstationdetailsbyname")
     public BikeStationDetail getBikeStationDetailsByName(@RequestParam("stationname") String stationName) {
         return bikeStationService.getBikeStationDetails(stationName);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping("/getstationdetailsbynamewithdatefilter")
     public BikeStationDetail getBikeStationDetailsByNameWithDateFilter(@RequestParam("stationname") String stationName,
             @RequestParam("startdate") Timestamp startDate, @RequestParam("enddate") Timestamp endDate) {
         return bikeStationService.getBikeStationDetailsWithDateFilter(stationName, startDate, endDate);
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/savebiketrip")
     public ResponseEntity<BikeTrip> saveBikeTrip(@RequestParam("departureTime") Timestamp departureTime,
             @RequestParam("returnTime") Timestamp returnTime,
@@ -105,7 +96,6 @@ public class RestController {
         return ResponseEntity.ok(bikeTripService.saveBikeStrip(bikeTrip));
     }
 
-    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/savebikestation")
     public ResponseEntity<BikeStation> saveBikeStation(@RequestParam("id") int id, @RequestParam("name") String name,
             @RequestParam("address") String address, @RequestParam("city") String city,
