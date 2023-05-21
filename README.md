@@ -105,3 +105,11 @@ Append the Endpoint with root url of the application
 | /getstationdetailsbynamewithdatefilter | GET    | stationname(String), startdate(Timestamp), enddate(Timestamp)                                                                                                                                                                    | stationName(String), stationAddress(String),<br> departureStationAggregate{noOfStartingTrips(Integer), avgDistanceOfStartingTrips(Double)}, <br>returnStationAggregate{noOfEndingTrips(Integer), avgDistanceOfEndingTrips(Double)}, <br>  topFiveDepartureStations(List&lt;String&gt;), topFiveReturnStations(List&lt;String&gt;) |
 | /savebiketrip                          | POST   | departureTime(Timestamp), returnTime(Timestamp),<br> departureStationId(Integer), departureStationName(String),<br> returnStationId(Integer), returnStationName(String),<br> coveredDistanceInMeter(Float), durationInSec(Float) | Object&lt;BikeTrip&gt;                                                                                                                                                                                                                                                                                                            |
 | /savebikestation                       | POST   | id(Integer), name(String),<br> address(String), city(String),<br> operator(String), capacity(Integer),<br> xCoordinate(Float), yCoordinate(Float)                                                                                | Object&lt;BikeStation&gt;                                                                                                                                                                                                                                                                                                         |
+
+<br>
+<br>
+<br>
+### Snippets
+#### TESTS
+![image](https://github.com/MohHajri/Solita_Academy_BikeJourney_Project_Backend/assets/89851240/f6308bc0-0aa3-42e0-855b-1459412d4c16)
+
