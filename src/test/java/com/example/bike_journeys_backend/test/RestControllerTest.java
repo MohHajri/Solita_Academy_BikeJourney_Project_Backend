@@ -1,7 +1,11 @@
 package com.example.bike_journeys_backend.test;
 
+import com.java.bean.BikeStationDetail;
+import com.java.bean.DepartureStationAggregate;
+import com.java.bean.ReturnStationAggregate;
 import com.java.controller.RestController;
 import com.java.entity.BikeTrip;
+import com.java.service.BikeStationService;
 import com.java.service.BikeTripService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +32,9 @@ public class RestControllerTest {
 
 	@Mock
 	private BikeTripService bikeTripService;
+
+	@Mock
+	private BikeStationService bikeStationService;
 
 	@InjectMocks
 	private RestController restController;
@@ -125,6 +132,105 @@ public class RestControllerTest {
 				.andExpect(jsonPath("$.returnStationName").value(bikeTrip.getReturnStationName()))
 				.andExpect(jsonPath("$.coveredDistanceInMeter").value(bikeTrip.getCoveredDistanceInMeter()))
 				.andExpect(jsonPath("$.durationInSec").value(bikeTrip.getDurationInSec()))
+				.andReturn();
+	}
+
+	@Test
+	public void testGetBikeStationDetailsByName() throws Exception {
+		// Preparing mock data
+		String stationName = "TestStation";
+		BikeStationDetail bikeStationDetail = new BikeStationDetail();
+		bikeStationDetail.setStationName(stationName);
+		bikeStationDetail.setStationAddress("TestAddress");
+		bikeStationDetail.setDepartureStationAggregate(new DepartureStationAggregate(500, 4000.0));
+		bikeStationDetail.setReturnStationAggregate(new ReturnStationAggregate(600, 3500.0));
+		bikeStationDetail
+				.setTopFiveDepartureStations(Arrays.asList("Station1", "Station2", "Station3", "Station4", "Station5"));
+		bikeStationDetail
+				.setTopFiveReturnStations(Arrays.asList("Station6", "Station7", "Station8", "Station9", "Station10"));
+
+		// Mocking the service method
+		when(bikeStationService.getBikeStationDetails(stationName)).thenReturn(bikeStationDetail);
+
+		// Perforing the GET request
+		ResultActions resultActions = mockMvc.perform(get("/getstationdetailsbyname")
+				.param("stationname", stationName));
+
+		// Asserting the response
+		resultActions.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"))
+				.andExpect(jsonPath("$.stationName").value(bikeStationDetail.getStationName()))
+				.andExpect(jsonPath("$.stationAddress").value(bikeStationDetail.getStationAddress()))
+				.andExpect(jsonPath("$.departureStationAggregate.noOfStartingTrips")
+						.value(bikeStationDetail.getDepartureStationAggregate().getNoOfStartingTrips()))
+				.andExpect(jsonPath("$.departureStationAggregate.avgDistanceOfStartingTrips")
+						.value(bikeStationDetail.getDepartureStationAggregate().getAvgDistanceOfStartingTrips()))
+				.andExpect(jsonPath("$.returnStationAggregate.noOfEndingTrips")
+						.value(bikeStationDetail.getReturnStationAggregate().getNoOfEndingTrips()))
+				.andExpect(jsonPath("$.returnStationAggregate.avgDistanceOfEndingTrips")
+						.value(bikeStationDetail.getReturnStationAggregate().getAvgDistanceOfEndingTrips()))
+				.andExpect(jsonPath("$.topFiveDepartureStations[0]").value("Station1"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[1]").value("Station2"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[2]").value("Station3"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[3]").value("Station4"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[4]").value("Station5"))
+				.andExpect(jsonPath("$.topFiveReturnStations[0]").value("Station6"))
+				.andExpect(jsonPath("$.topFiveReturnStations[1]").value("Station7"))
+				.andExpect(jsonPath("$.topFiveReturnStations[2]").value("Station8"))
+				.andExpect(jsonPath("$.topFiveReturnStations[3]").value("Station9"))
+				.andExpect(jsonPath("$.topFiveReturnStations[4]").value("Station10"))
+				.andReturn();
+	}
+
+	@Test
+	public void testGetBikeStationDetailsByNameWithDateFilter() throws Exception {
+		// Preparing mock data
+		String stationName = "TestStation";
+		Timestamp startDate = Timestamp.valueOf("2021-01-01 00:00:00");
+		Timestamp endDate = Timestamp.valueOf("2021-12-31 23:59:59");
+		BikeStationDetail bikeStationDetail = new BikeStationDetail();
+		bikeStationDetail.setStationName(stationName);
+		bikeStationDetail.setStationAddress("TestAddress");
+		bikeStationDetail.setDepartureStationAggregate(new DepartureStationAggregate(500, 4000.0));
+		bikeStationDetail.setReturnStationAggregate(new ReturnStationAggregate(600, 3500.0));
+		bikeStationDetail
+				.setTopFiveDepartureStations(Arrays.asList("Station1", "Station2", "Station3", "Station4", "Station5"));
+		bikeStationDetail
+				.setTopFiveReturnStations(Arrays.asList("Station6", "Station7", "Station8", "Station9", "Station10"));
+
+		// Mocking the service method
+		when(bikeStationService.getBikeStationDetailsWithDateFilter(stationName, startDate, endDate))
+				.thenReturn(bikeStationDetail);
+
+		// Perforing the GET request
+		ResultActions resultActions = mockMvc.perform(get("/getstationdetailsbynamewithdatefilter")
+				.param("stationname", stationName)
+				.param("startdate", startDate.toString())
+				.param("enddate", endDate.toString()));
+
+		// Asserting the response
+		resultActions.andExpect(status().isOk())
+				.andExpect(content().contentType("application/json"))
+				.andExpect(jsonPath("$.stationName").value(bikeStationDetail.getStationName()))
+				.andExpect(jsonPath("$.stationAddress").value(bikeStationDetail.getStationAddress()))
+				.andExpect(jsonPath("$.departureStationAggregate.noOfStartingTrips")
+						.value(bikeStationDetail.getDepartureStationAggregate().getNoOfStartingTrips()))
+				.andExpect(jsonPath("$.departureStationAggregate.avgDistanceOfStartingTrips")
+						.value(bikeStationDetail.getDepartureStationAggregate().getAvgDistanceOfStartingTrips()))
+				.andExpect(jsonPath("$.returnStationAggregate.noOfEndingTrips")
+						.value(bikeStationDetail.getReturnStationAggregate().getNoOfEndingTrips()))
+				.andExpect(jsonPath("$.returnStationAggregate.avgDistanceOfEndingTrips")
+						.value(bikeStationDetail.getReturnStationAggregate().getAvgDistanceOfEndingTrips()))
+				.andExpect(jsonPath("$.topFiveDepartureStations[0]").value("Station1"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[1]").value("Station2"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[2]").value("Station3"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[3]").value("Station4"))
+				.andExpect(jsonPath("$.topFiveDepartureStations[4]").value("Station5"))
+				.andExpect(jsonPath("$.topFiveReturnStations[0]").value("Station6"))
+				.andExpect(jsonPath("$.topFiveReturnStations[1]").value("Station7"))
+				.andExpect(jsonPath("$.topFiveReturnStations[2]").value("Station8"))
+				.andExpect(jsonPath("$.topFiveReturnStations[3]").value("Station9"))
+				.andExpect(jsonPath("$.topFiveReturnStations[4]").value("Station10"))
 				.andReturn();
 	}
 
