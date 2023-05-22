@@ -109,8 +109,11 @@ Append the Endpoint with root url of the application
 <br>
 <br>
 <br>
+
 ### Snippets
+
 #### TESTS
+
 
 ![image](https://github.com/MohHajri/Solita_Academy_BikeJourney_Project_Backend/assets/89851240/f6308bc0-0aa3-42e0-855b-1459412d4c16)
 
